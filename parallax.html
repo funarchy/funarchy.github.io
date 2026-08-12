@@ -6,6 +6,7 @@
 .stage{position:relative;width:100vw;height:100dvh;overflow:hidden;background:var(--ground);touch-action:none}
 .layer{position:absolute;inset:0;pointer-events:none;will-change:transform}
 .art{position:absolute;left:50%;top:50%;width:max(100vw,177.7777778dvh);height:max(100dvh,56.25vw);transform:translate(-50%,-50%)}
+.art picture{display:contents}
 .art img{position:absolute;display:block;user-select:none;-webkit-user-drag:none;max-width:none}
 .ground .art img{left:0;top:0;width:100%;height:100%}
 .parallax .art img{left:-3%;top:-3%;width:106%;height:106%}
@@ -23,7 +24,7 @@ const manifest={layers:[
 {file:'layers/layer-5-text@2x.png',z:5,depth:0.10,kind:'parallax text-layer'}],maxShiftPx:48};
 const stage=document.getElementById('stage');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const nodes=manifest.layers.map(item=>{const layer=document.createElement('div');layer.className='layer '+item.kind;layer.style.zIndex=item.z;const art=document.createElement('div');art.className='art';const img=document.createElement('img');img.src=item.file;img.alt='';art.appendChild(img);if(item.z===5){const a=document.createElement('a');a.className='github-hit';a.href='https://github.com/funarchy/org';a.setAttribute('aria-label','Open Funarchy on GitHub');a.textContent='Funarchy on GitHub';art.appendChild(a)}layer.appendChild(art);stage.appendChild(layer);return{...item,layer}});
+const nodes=manifest.layers.map(item=>{const layer=document.createElement('div');layer.className='layer '+item.kind;layer.style.zIndex=item.z;const art=document.createElement('div');art.className='art';const pic=document.createElement('picture');for(const type of ['avif','webp']){const s=document.createElement('source');s.type='image/'+type;s.srcset=item.file.replace(/\.png$/,'.'+type);pic.appendChild(s)}const img=document.createElement('img');img.src=item.file;img.alt='';pic.appendChild(img);art.appendChild(pic);if(item.z===5){const a=document.createElement('a');a.className='github-hit';a.href='https://github.com/funarchy/org';a.setAttribute('aria-label','Open Funarchy on GitHub');a.textContent='Funarchy on GitHub';art.appendChild(a)}layer.appendChild(art);stage.appendChild(layer);return{...item,layer}});
 let aimX=0,aimY=0,currentX=0,currentY=0,hasPointer=false;
 const clamp=v=>Math.max(-1,Math.min(1,v));
 function setPointer(x,y){const r=stage.getBoundingClientRect();aimX=clamp(((x-r.left)/r.width)*2-1);aimY=clamp(((y-r.top)/r.height)*2-1);hasPointer=true}
