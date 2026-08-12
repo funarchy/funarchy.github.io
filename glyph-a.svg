@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <g id="glyph-a">
+    <polygon points="96.00,416.00 148.00,416.00 256.00,56.00 230.00,56.00" fill="#EFE3C8"/>
+    <polygon points="364.00,416.00 416.00,416.00 282.00,56.00 256.00,56.00" fill="#EFE3C8"/>
+    <circle cx="256" cy="286" r="30" fill="#B23A2A"/>
+  </g>
+</svg>

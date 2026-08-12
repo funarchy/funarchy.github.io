@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Funarchy — Parallax</title><link rel="icon" href="icon/favicon.svg">
+<style>
+:root{--ground:#1E1B16}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--ground)}body{overflow:hidden}
+.stage{position:relative;width:100vw;height:100dvh;overflow:hidden;background:var(--ground);touch-action:none}
+.layer{position:absolute;inset:0;pointer-events:none;will-change:transform}
+.art{position:absolute;left:50%;top:50%;width:max(100vw,177.7777778dvh);height:max(100dvh,56.25vw);transform:translate(-50%,-50%)}
+.art img{position:absolute;display:block;user-select:none;-webkit-user-drag:none;max-width:none}
+.ground .art img{left:0;top:0;width:100%;height:100%}
+.parallax .art img{left:-3%;top:-3%;width:106%;height:106%}
+.text-layer{pointer-events:none}.github-hit{position:absolute;left:40.2%;top:61.2%;width:22.2%;height:8.1%;z-index:3;border-radius:999px;text-indent:-9999px;overflow:hidden;outline:none;pointer-events:auto}
+.github-hit:focus-visible{box-shadow:0 0 0 2px #EFE3C8,0 0 0 6px rgba(20,17,13,.75)}
+@media(prefers-reduced-motion:reduce){.layer{transform:none!important}}
+</style></head><body><main class="stage" id="stage" aria-label="Funarchy painterly parallax key art"></main>
+<script>
+const manifest={layers:[
+{file:'layers/layer-0-ground@2x.png',z:0,depth:0,kind:'ground'},
+{file:'layers/layer-1-far@2x.png',z:1,depth:-0.15,kind:'parallax'},
+{file:'layers/layer-2-mid@2x.png',z:2,depth:0.35,kind:'parallax'},
+{file:'layers/layer-3-near@2x.png',z:3,depth:0.65,kind:'parallax'},
+{file:'layers/layer-4-fore@2x.png',z:4,depth:1,kind:'parallax'},
+{file:'layers/layer-5-text@2x.png',z:5,depth:0.10,kind:'parallax text-layer'}],maxShiftPx:48};
+const stage=document.getElementById('stage');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nodes=manifest.layers.map(item=>{const layer=document.createElement('div');layer.className='layer '+item.kind;layer.style.zIndex=item.z;const art=document.createElement('div');art.className='art';const img=document.createElement('img');img.src=item.file;img.alt='';art.appendChild(img);if(item.z===5){const a=document.createElement('a');a.className='github-hit';a.href='https://github.com/funarchy/org';a.setAttribute('aria-label','Open Funarchy on GitHub');a.textContent='Funarchy on GitHub';art.appendChild(a)}layer.appendChild(art);stage.appendChild(layer);return{...item,layer}});
+let aimX=0,aimY=0,currentX=0,currentY=0,hasPointer=false;
+const clamp=v=>Math.max(-1,Math.min(1,v));
+function setPointer(x,y){const r=stage.getBoundingClientRect();aimX=clamp(((x-r.left)/r.width)*2-1);aimY=clamp(((y-r.top)/r.height)*2-1);hasPointer=true}
+addEventListener('pointermove',e=>{if(!reduce)setPointer(e.clientX,e.clientY)},{passive:true});
+addEventListener('pointerleave',()=>{hasPointer=false});
+const start=performance.now(),period=20000,lerp=.08;
+function frame(now){if(!reduce){const t=now-start;const driftX=Math.sin(t/period*Math.PI*2)*.12;const driftY=Math.cos(t/(period*.87)*Math.PI*2)*.08;const tx=clamp((hasPointer?aimX:0)+driftX);const ty=clamp((hasPointer?aimY:0)+driftY);currentX+=(tx-currentX)*lerp;currentY+=(ty-currentY)*lerp;for(const n of nodes){const dx=currentX*manifest.maxShiftPx*n.depth;const dy=currentY*manifest.maxShiftPx*n.depth;n.layer.style.transform=`translate3d(${dx.toFixed(2)}px,${dy.toFixed(2)}px,0)`}}requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+</script></body></html>
