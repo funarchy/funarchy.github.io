@@ -1,32 +1,33 @@
 {
+  "formats": ["avif", "webp", "png"],
   "layers": [
     {
-      "file": "layers/layer-0-ground@2x.png",
+      "base": "layers/layer-0-ground@2x",
       "z": 0,
       "depth": 0.0
     },
     {
-      "file": "layers/layer-1-far@2x.png",
+      "base": "layers/layer-1-far@2x",
       "z": 1,
       "depth": -0.15
     },
     {
-      "file": "layers/layer-2-mid@2x.png",
+      "base": "layers/layer-2-mid@2x",
       "z": 2,
       "depth": 0.35
     },
     {
-      "file": "layers/layer-3-near@2x.png",
+      "base": "layers/layer-3-near@2x",
       "z": 3,
       "depth": 0.65
     },
     {
-      "file": "layers/layer-4-fore@2x.png",
+      "base": "layers/layer-4-fore@2x",
       "z": 4,
       "depth": 1.0
     },
     {
-      "file": "layers/layer-5-text@2x.png",
+      "base": "layers/layer-5-text@2x",
       "z": 5,
       "depth": 0.1
     }

@@ -3,7 +3,8 @@
 - `index.html` — exact static key art with a clickable GitHub lockup.
 - `parallax.html` — six-layer cursor/touch autonomous parallax implementation.
 - `keyart-1920x1080.png` — approved full 16:9 key art.
-- `layers.json` — layer order and depth manifest.
+- `layers.json` — layer order and depth manifest; names each layer by
+  extensionless base, with the served format preference order.
 
 Both HTML files are dependency-free and can be opened directly or served as static files.
 
@@ -23,6 +24,10 @@ webp):
     # layers carry alpha
     avifenc -q 72 -y 444 -s 5 --qalpha 90 layer-N.png layer-N.avif
     cwebp -q 88 -m 6 -sharp_yuv -alpha_q 100 layer-N.png -o layer-N.webp
+
+The banner is uploaded to platforms that want PNG, so its master is also
+kept losslessly optimized (`oxipng -o max --strip safe`) alongside AVIF
+and WebP copies for embedding on the web.
 
 ## License
 
